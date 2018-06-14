@@ -1,0 +1,37 @@
+---
+- name: Copy the new logrotate configuration
+  template:
+    src: logrotate.j2
+    dest: "/etc/logrotate.d/{{ item.name }}"
+    owner: root
+    group: root
+    mode: 0644
+    backup: true
+  when: item is defined
+
+- name: Ensure the logrotate configuration is valid
+  command: "logrotate -d /etc/logrotate.d/{{ item.name }}"
+  register: config_file_stat
+  changed_when: false
+  when: item is defined
+
+- name: Retrieve the name of the old logrotate config if the new one is invalid
+  shell: "ls -tr1 /etc/logrotate.d/{{ item.name }}.* | tail -1"
+  register: latest_backup
+  ignore_errors: true
+  when: config_file_stat.stderr.find('error') != -1
+
+- name: Ensure the backup file exists
+  stat:
+    path: "{{ latest_backup.stdout }}"
+  register: backup_file_stat
+  when: config_file_stat.stderr.find('error') != -1
+
+- name: Restore the latest logrotate valid configuration
+  command: "mv {{ latest_backup.stdout }} /etc/logrotate.d/{{ item.name }}"
+  when: config_file_stat.stderr.find('error') != -1 and backup_file_stat.stat.exists and not backup_file_stat.stat.isdir
+
+- name: Fail if the new logrotate configuration is invalid
+  fail:
+    msg: Logrotate check has failed due an invalid configuration
+  when: config_file_stat.stderr.find('error') != -1

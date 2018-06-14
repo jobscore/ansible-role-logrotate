@@ -1,0 +1,14 @@
+---
+- name: Ensure logrotate is installed and configured
+  apt:
+    name: logrotate
+    state: present
+  tags:
+    - logrotate-setup
+
+- include_tasks: update-logrotate.yml
+  with_items: "{{logrotate_config}}"
+  when: logrotate_config is defined
+  tags:
+    - logrotate-setup
+    - logrotate-deploy

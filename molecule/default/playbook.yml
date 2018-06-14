@@ -1,0 +1,15 @@
+---
+- name: Valid config
+  hosts: all
+  roles:
+    - role: ansible-role-logrotate
+  vars:
+    logrotate_config:
+      - name: test
+        paths:
+          - "/foo/bar/test.log"
+        frequency: daily
+        rotate: 4
+        extra_scripts: |
+          create 644 root root
+          sharedscripts

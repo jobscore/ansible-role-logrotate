@@ -1,0 +1,24 @@
+{% for path in item.paths %}
+  {{ path }}
+{% endfor %}
+{
+  {{ item.frequency }}
+  {% if 'minsize' in item %}
+    minsize {{item.minsize}}
+  {% endif %}
+  {% if 'maxsize' in item %}
+    maxsize {{item.maxsize}}
+  {% endif %}
+  missingok
+  {% if item.rotate %}
+    rotate {{ item.rotate }}
+  {% else %}
+    rotate 5
+  {% endif %}
+  compress
+  delaycompress
+  notifempty
+  {% if item.extra_scripts %}
+    {{ item.extra_scripts }}
+  {% endif %}
+}
