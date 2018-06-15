@@ -1,48 +1,86 @@
-Role Name
+Logrotate
 =========
 
-A brief description of the role goes here.
+An ansible role to install and configure Logrotate in a Ubuntu machine
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should
-be mentioned here. For instance, if the role uses the EC2 module, it may be a
-good idea to mention in this section that the boto package is required.
+None
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including
-any variables that are in defaults/main.yml, vars/main.yml, and any variables
-that can/should be set via parameters to the role. Any variables that are read
-from other roles and/or the global scope (ie. hostvars, group vars, etc.) should
-be mentioned here as well.
+`name`: The name of the logrotate config file
+
+`paths`: A list of log paths that will be managed by the logrotate config
+```
+paths:
+  - "/foo/bar/test.log"
+  - "/foo/bar/dev.log"
+```
+
+`frequency`: The frequency the log will be rotated. Possible values: `daily`, `weekly`, `monthly`, or `yearly`.
+
+`minsize`: Log files are rotated when they grow bigger than size bytes, but not before the additionally  specified  time  interval (daily, weekly, monthly, or yearly)
+```
+minsize: 100M
+```
+
+`maxsize`: Log files are rotated when they grow bigger than size bytes even before the  additionally  specified time  interval  (daily, weekly, monthly, or yearly)
+```
+maxsize: 1G
+```
+
+`rotate`: Log  files are rotated count times before being removed or mailed
+`rotate: 7`
+
+`extra_scripts`: Extra scripts or config that are not included in the default options of this role
+
+
+```
+extra_scripts: |
+  create 644 user group
+  postrotate
+    <some scripts here>
+  endscript
+```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in
-regards to parameters that may need to be set for other roles, or variables that
-are used from other roles.
+None
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: ansible-role-logrotate, x: 42 }
+```
+- name: Example logrotate
+  hosts: all
+  roles:
+    - role: ansible-role-logrotate
+  vars:
+    logrotate_config:
+      - name: Rails logrotate
+        paths:
+          - "/var/log/rails.log"
+        frequency: daily
+        minsize: 100M
+        rotate: 7
+        extra_scripts: |
+          create 644 app app
+          sharedscripts
+          postrotate
+            echo "Hello"
+          endscript
+```
 
 License
 -------
 
-BSD
+GPLv3
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a
-website (HTML is not allowed).
+[Glauber Batista](https://github.com/GlauberrBatista)
