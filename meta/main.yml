@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  author: Glauber Batista
+  description: Ansible role to manage logrotate config files
+  company: JobScore
+  license: GPLv3
+  min_ansible_version: 2.4
+  github_branch: master
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+        - trusty
+        - bionic
+
+  galaxy_tags:
+    - logrotate
+    - jobscore
