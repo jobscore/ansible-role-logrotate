@@ -58,7 +58,7 @@ Example Playbook
 - name: Example logrotate
   hosts: all
   roles:
-    - role: ansible-role-logrotate
+    - role: jobscore.logrotate
   vars:
     logrotate_config:
       - name: Rails logrotate

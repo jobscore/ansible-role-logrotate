@@ -1,14 +1,15 @@
+---
 sudo: required
 language: python
 services:
-- docker
+  - docker
 before_install:
-- sudo apt-get -qq update
+  - sudo apt-get -qq update
 install:
-- pip install molecule
-- pip install docker
+  - pip install molecule
+  - pip install docker
 script:
-- molecule test
+  - molecule test
 notifications:
   slack:
     rooms:
