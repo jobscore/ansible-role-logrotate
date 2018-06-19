@@ -14,6 +14,12 @@
   changed_when: false
   ignore_errors: true
 
+- name: Remove the backup when the config is valid
+  file:
+    path: "/etc/logrotate.d/{{ item.name }}.*"
+    state: absent
+  when: config_file_stat is not failed
+
 - name: Retrieve the name of the old logrotate config if the new one is invalid
   shell: "ls -tr1 /etc/logrotate.d/{{ item.name }}.* | tail -1"
   register: latest_backup
