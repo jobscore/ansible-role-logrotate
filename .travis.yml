@@ -1,12 +1,15 @@
----
 sudo: required
 language: python
 services:
-  - docker
+- docker
 before_install:
-  - sudo apt-get -qq update
+- sudo apt-get -qq update
 install:
-  - pip install molecule
-  - pip install docker
+- pip install molecule
+- pip install docker
 script:
-  - molecule test
+- molecule test
+notifications:
+  slack:
+    rooms:
+      secure: yXZC3uArtzjpq1hFEHWceOz5nRsaEGP5grKaqZh3G95q533v+ittkWL/moiP6b+Bqd0nibMw/9x7ZMlJMF/bg++s/v87V6yCwti1WY81EfZdMbAu/4MQitcDZYYtx/KNQaK5S01fbX4TmmhEkTYf5p6aHgeAmxv7KJBZ0VeXYUaqmZsYgXF/3E/QzUCvNBLXq62pXPpLHZy15PcMmoSEOOl/dWMQYB+1Kod1erAsvA0E/DitzMZjEtF0ca+sCPrh/4s/2PE1w8774y9LIW2CT/Nt5TZRO55ZtjlLj6X2/nw34jb0WiJ2i0Lxo796NR7I0WiLjF7GWawx5z39R39fyonkHb/EQFqlQccaWlMsAMjSJxSM8s6K2EqZ8PtHgMNDc+FM6Ts4F4tFeUPHQ42UMrJt5yQWsTHRki8/2zevYgqe3tgWtlgCLi8G7xILxUiRky0WRoCiVumV/z6X381EuvLuFdXptmyoGbfN2oiCfAEy6NWtO4x5d/VvEycxiKAOgPp9hO2iVP44YapAdrg4qByZGQyHhqQ6FFeQiocecOiJl3xt/fUKKWK/v1GqNdxMjt+aLtZ/YcnZWp7CS7BxNq+9gPOeeWMJEZALYXqTYFCjEGVsaNlRQ+yfkXVvzu8gSqvD+azv1EnsA55T9piCTeG+9/MTLeCWpDtc5qpy0HI=
