@@ -11,4 +11,3 @@
   when: logrotate_config is defined
   tags:
     - logrotate-setup
-    - logrotate-deploy

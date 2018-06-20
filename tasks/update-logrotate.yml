@@ -7,30 +7,42 @@
     group: root
     mode: 0644
     backup: true
+  tags:
+    - logrotate-setup
 
 - name: Ensure the logrotate configuration is valid
   command: "logrotate -d /etc/logrotate.d/{{ item.name }}"
   register: config_file_stat
   changed_when: false
   ignore_errors: true
+  tags:
+    - logrotate-setup
 
 - name: Remove the backup when the config is valid
   file:
     path: "/etc/logrotate.d/{{ item.name }}.*"
     state: absent
   when: config_file_stat is not failed
+  tags:
+    - logrotate-setup
 
 - name: Retrieve the name of the old logrotate config if the new one is invalid
   shell: "ls -tr1 /etc/logrotate.d/{{ item.name }}.* | tail -1"
   register: latest_backup
   ignore_errors: true
   when: config_file_stat is failed
+  tags:
+    - logrotate-setup
 
 - name: Restore the latest logrotate valid configuration
   command: "mv {{ latest_backup.stdout }} /etc/logrotate.d/{{ item.name }}"
   when: config_file_stat is failed
+  tags:
+    - logrotate-setup
 
 - name: Fail if the new logrotate configuration is invalid
   fail:
     msg: Logrotate check has failed due an invalid configuration
   when: config_file_stat is failed
+  tags:
+    - logrotate-setup
