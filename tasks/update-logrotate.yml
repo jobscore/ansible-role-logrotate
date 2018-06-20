@@ -18,11 +18,20 @@
   tags:
     - logrotate-setup
 
-- name: Remove the backup when the config is valid
-  file:
-    path: "/etc/logrotate.d/{{ item.name }}.*"
-    state: absent
+- name: Delete backup files
+  find:
+    paths: /etc/logrotate.d/
+    patterns: "{{ item.name }}.*"
+  register: files_to_delete
   when: config_file_stat is not failed
+  tags:
+    - logrotate-setup
+
+- name: Remove backup files
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ files_to_delete.files }}"
   tags:
     - logrotate-setup
 
