@@ -3,11 +3,12 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
 platforms:
   - name: instance
-    image: ubuntu:16.04
+    image: ubuntu:18.04
 provisioner:
   name: ansible
   lint:

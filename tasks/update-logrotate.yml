@@ -18,7 +18,7 @@
   tags:
     - logrotate-setup
 
-- name: Delete backup files
+- name: Ensure backup files will be removed
   find:
     paths: /etc/logrotate.d/
     patterns: "{{ item.name }}.*"
@@ -27,11 +27,14 @@
   tags:
     - logrotate-setup
 
-- name: Remove backup files
+- name: Ensure backup files are removed
   file:
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ files_to_delete.files }}"
+  when:
+    - config_file_stat is not failed
+    - files_to_delete is defined
   tags:
     - logrotate-setup
 
